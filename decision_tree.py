@@ -18,34 +18,14 @@ ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 app = Flask(__name__)
 UPLOAD_FOLDER = 'upload'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-basedir = os.path.abspath(os.path.dirname(__file__))
+basedir = os.path.abspath(os.path.dirname(__file__))  # D:\PyCharm\decision_tree
 app.config['MAX_CONTENT_LENGTH'] = 16*1024*1024
 
 
-fr = open('D:\PyCharm\decision_tree\source_code\listcan.txt')
-lenses = [inst.strip().split('\t') for inst in fr .readlines()]
-lensesLables = ['seze', 'gendi', 'qiaosheng', 'wenli', 'qibu', 'chugan']
-
-
-# 生成决策树并画图
-def creatpic():
-    # fig = plt.figure(1, facecolor='white')
-    # lensesLables = ['age', 'prescript', 'astigmatic', 'tearRate']
-    lensesTree = trees.createTree(lenses, lensesLables)
-    fig = treePlotter.createPlot(lensesTree)
-    return fig
-
-
-@app.route('/dele')
+@app.route('/')
 def hello_world():
     # 模板渲染
     return render_template('index.html')
-
-
-@app.route('/')
-def file_upload():
-    # 模板渲染
-    return render_template('fileupload.html')
 
 
 # 判断文件是否合法
@@ -61,12 +41,13 @@ def upload_file():
     if not os.path.exists(file_dir):
         os.makedirs(file_dir)
     f = request.files['file']
+    # print f.filename
     if f and allowed_file(f.filename):
         fname = f.filename
         f.save(os.path.join(file_dir, fname))
-        return jsonify({"errno": 0, "errmsg": "上传成功"})
+        return jsonify({"error": 0, "errmsg": "上传成功"})
     else:
-        return jsonify({"errno": 1001, "errmsg": "上传失败"})
+        return jsonify({"error": 1001, "errmsg": "上传失败"})
 
 
 @app.route('/uploads/<filename>')
@@ -74,7 +55,32 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
-# 传入参数,
+# 获取数据
+def gain_data():
+    # url_file = os.path.join(basedir, app.config['UPLOAD_FOLDER'])
+    fr = open('D:\PyCharm\decision_tree\source_code\listcan.txt')
+    lenses = [inst.strip().split('\t') for inst in fr .readlines()]
+    lensesLables = ['seze', 'gendi', 'qiaosheng', 'wenli', 'qibu', 'chugan']
+    return lenses, lensesLables
+
+
+# 生成决策树并画图
+def creatpic():
+    # fig = plt.figure(1, facecolor='white')
+    # lensesLables = ['age', 'prescript', 'astigmatic', 'tearRate']
+    lenses, lensesLables = gain_data()
+    lensesTree = trees.createTree(lenses, lensesLables)
+    fig = treePlotter.createPlot(lensesTree)
+    return fig
+
+
+@app.route('/aa')
+def file_upload():
+    # 模板渲染
+    return render_template('fileupload.html')
+
+
+# 传入参数
 @app.route('/action/create', methods=['GET'])
 # @app.route('/')
 def index():
@@ -97,6 +103,7 @@ def dealdata():
     attributeList.append(requestJsonString['qibu'])
     attributeList.append(requestJsonString['chugan'])
     # lensesLablestwo = lensesLables[:]
+    lenses, lensesLables = gain_data()
     lensesTree = trees.createTree(lenses, lensesLables)
     labelsres = trees.classify(lensesTree, lensesLables, attributeList)
     return labelsres

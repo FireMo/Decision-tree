@@ -10,6 +10,14 @@
 </head>
 <body>
 <section>
+    <form enctype="multipart/form-data" action="/fileup/fileuploaded" method="post">
+        <p>File:<input type="file" name="file"></p>
+    {#    <p>File:<input type="file" name="filetwo"></p>#}
+        <p><strong>格式要求:</strong>按照属性顺序，依次放置属性值；属性值之间以tab间隔开；最后一列为样本的标签；</p>
+        <button type="submit" class="btn btn-default" onclick="uploads()">提交</button>
+    </form>
+</section>
+<section>
    <div class="iframe" align="center">
        <p>点击按钮生成决策树：</p>
 {#       <a class="btn" onclick="create()">生成决策树</a>#}
@@ -17,7 +25,8 @@
    </div>
    <div id="picture"> </div>
 </section>
-   <section>
+
+<section>
        <form class="form-horizontal" action="/action/dealdata" method="post">
            <div class="form-group">
                <label for="imputSeze" class="col-sm-2 control-label">色泽</label>
@@ -87,10 +96,7 @@
 
            <div id="labels"></div>
        </form>
-   </section>
-
-
-
+</section>
 
 <script src="../static/js/jquery.min.js"></script>
 <script type="text/javascript" src="../static/js/prettify/prettify.js"></script>
@@ -100,6 +106,8 @@
 
 
 <script language="JavaScript">
+
+    {#生成决策树#}
 function createTree() {
     $('#picture').html('');
     $.ajax({
@@ -117,12 +125,29 @@ function createTree() {
     })
 }
 
-
 function deal(data) {
     var imgNode = document.createElement('img');
     imgNode.setAttribute('src','data:image/png;base64,'+ data);
     document.getElementById('picture').appendChild(imgNode);
 }
+
+
+{#文件上传#}
+function uploads() {
+    $.ajax({
+        url:'/fileup/fileuploaded',
+        type:'post',
+        async:false,
+        data:{},
+        success:function (results) {
+            console.log(results)
+        },
+        error:function (xhr,testState) {
+            console.log('error')
+        }
+        })
+    }
+
 
 function transdata() {
     $.ajax({
