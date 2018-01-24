@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>file upload</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/prettify.css')}}">
+</head>
+<body>
+
+<form enctype="multipart/form-data" action="/fileup/fileuploaded" method="post">
+    <p>File:<input type="file" name="file"></p>
+{#    <p>File:<input type="file" name="filetwo"></p>#}
+    <p><h3>格式要求:</h3>按照属性顺序，依次放置属性值；属性值之间以tab间隔开；最后一列为样本的标签；</p>
+    <button type="submit" class="btn btn-default" onclick="uploads()">提交</button>
+</form>
+
+
+<script src="../static/js/jquery.min.js"></script>
+<script type="text/javascript" src="../static/js/prettify/prettify.js"></script>
+<script src="https://cdn.bootcss.com/prettify/r298/run_prettify.js"></script>
+<script src="../static/js/layout.js"></script>
+<script src="../static/js/jquery-latest.js"></script>
+
+<script>
+    function uploads() {
+        $.ajax({
+            url:'/fileup/fileuploaded',
+            type:'post',
+            async:false,
+            data:{},
+            success:function (results) {
+                console.log(results)
+            },
+            error:function (xhr,testState) {
+                console.log('error')
+            }
+            })
+        
+    }
+</script>
+</body>
+</html>
