@@ -58,9 +58,12 @@ def uploaded_file(filename):
 # 获取数据
 def gain_data():
     # url_file = os.path.join(basedir, app.config['UPLOAD_FOLDER'])
-    fr = open('D:\PyCharm\decision_tree\source_code\listcan.txt')
+    fr = open('D:\PyCharm\decision_tree\upload\\xiguadata3.txt')
     lenses = [inst.strip().split('\t') for inst in fr .readlines()]
-    lensesLables = ['seze', 'gendi', 'qiaosheng', 'wenli', 'qibu', 'chugan']
+    fp = open('D:\PyCharm\decision_tree\upload\\xigualabel.txt')
+    lensesLableses = [inst.strip().split('\t') for inst in fp.readlines()]
+    lensesLables = lensesLableses[0]
+    # lensesLables = ['seze', 'gendi', 'qiaosheng', 'wenli', 'qibu', 'chugan']
     return lenses, lensesLables
 
 

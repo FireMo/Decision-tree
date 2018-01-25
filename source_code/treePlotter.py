@@ -6,6 +6,14 @@ Created on Oct 14, 2010
 
 import matplotlib.pyplot as plt
 
+import matplotlib.pyplot as plt
+from matplotlib.font_manager import FontProperties
+font = FontProperties(fname=r"c:\windows\fonts\simsun.ttc", size=14)
+
+import sys
+reload(sys)
+sys.setdefaultencoding('gbk')
+
 decisionNode = dict(boxstyle="sawtooth", fc="0.8")
 leafNode = dict(boxstyle="round4", fc="0.8")
 arrow_args = dict(arrowstyle="<-")
@@ -42,7 +50,7 @@ def getTreeDepth(myTree):
 def plotNode(nodeTxt, centerPt, parentPt, nodeType):
     createPlot.ax1.annotate(nodeTxt, xy=parentPt,  xycoords='axes fraction',
              xytext=centerPt, textcoords='axes fraction',
-             va="center", ha="center", bbox=nodeType, arrowprops=arrow_args)
+             va="center", ha="center", bbox=nodeType, arrowprops=arrow_args, fontproperties=font)
 
 
 def plotMidText(cntrPt, parentPt, txtString):
