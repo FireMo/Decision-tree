@@ -12,7 +12,7 @@ font = FontProperties(fname=r"c:\windows\fonts\simsun.ttc", size=14)
 
 import sys
 reload(sys)
-sys.setdefaultencoding('gbk')
+sys.setdefaultencoding('utf-8')
 
 decisionNode = dict(boxstyle="sawtooth", fc="0.8")
 leafNode = dict(boxstyle="round4", fc="0.8")

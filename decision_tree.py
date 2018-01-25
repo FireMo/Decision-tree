@@ -10,6 +10,13 @@ from flask import Flask, url_for, request, make_response, json, redirect, abort,
     render_template_string, render_template, send_from_directory, jsonify
 from source_code import trees
 from werkzeug.utils import secure_filename
+import json
+import chardet
+
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 
 matplotlib.use('Agg')  # 不出现画图的框
 
@@ -58,9 +65,10 @@ def uploaded_file(filename):
 # 获取数据
 def gain_data():
     # url_file = os.path.join(basedir, app.config['UPLOAD_FOLDER'])
-    fr = open('D:\PyCharm\decision_tree\upload\\xiguadata3.txt')
-    lenses = [inst.strip().split('\t') for inst in fr .readlines()]
-    fp = open('D:\PyCharm\decision_tree\upload\\xigualabel.txt')
+    # fr = open('D:\PyCharm\decision_tree\upload\\xiguadata2.txt')
+    fr = open('D:\PyCharm\decision_tree\upload\\xiguadata3utf8.txt')
+    lenses = [inst.strip().split('\t') for inst in fr.readlines()]
+    fp = open('D:\PyCharm\decision_tree\upload\\xigualabelutf8.txt')
     lensesLableses = [inst.strip().split('\t') for inst in fp.readlines()]
     lensesLables = lensesLableses[0]
     # lensesLables = ['seze', 'gendi', 'qiaosheng', 'wenli', 'qibu', 'chugan']
@@ -98,6 +106,7 @@ def index():
 @app.route('/action/dealdata', methods=['POST'])
 def dealdata():
     requestJsonString = request.form.to_dict()
+    butlist = []
     attributeList = []
     attributeList.append(requestJsonString['seze'])
     attributeList.append(requestJsonString['gendi'])
@@ -105,11 +114,37 @@ def dealdata():
     attributeList.append(requestJsonString['wenli'])
     attributeList.append(requestJsonString['qibu'])
     attributeList.append(requestJsonString['chugan'])
+    # attributeList2 = json.dumps(attributeList, encoding='utf-8')
+    # for i in range(len(attributeList)):
+    #     print attributeList[i]
+    # print attributeList
+    # butlist = ['qinglv', 'quansuo', 'zhuoxiang', 'qingxi', 'aoxian', 'yinghua']
     # lensesLablestwo = lensesLables[:]
     lenses, lensesLables = gain_data()
     lensesTree = trees.createTree(lenses, lensesLables)
-    labelsres = trees.classify(lensesTree, lensesLables, attributeList)
+    print lenses
+    print 'lic'
+    print lensesLables
+    # labelsres = trees.classify(lensesTree, lensesLables, attributeList)
+    labelsres = classify(lensesTree, lensesLables, attributeList)
     return labelsres
+
+
+def classify(inputTree, featLabels, testVec):
+    firstStr = inputTree.keys()[0]
+    print firstStr
+    secondDict = inputTree[firstStr]
+    print secondDict
+    featIndex = featLabels.index(firstStr)
+    print featIndex
+    key = testVec[featIndex]
+    print key
+    valueOfFeat = secondDict[key]
+    if isinstance(valueOfFeat, dict):
+        classLabel = classify(valueOfFeat, featLabels, testVec)
+    else:
+        classLabel = valueOfFeat
+    return classLabel
 
 
 if __name__ == '__main__':
