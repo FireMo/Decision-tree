@@ -25,7 +25,6 @@ fp = open('D:\PyCharm\decision_tree\upload\\xigualabelutf8.txt')
 lensesLableses = [inst.strip().split('\t') for inst in fp.readlines()]
 print chardet.detect(lensesLableses[0][0])
 print lensesLableses
-
 # request = urllib2.Request("http://www.baidu.com")
 # response = urllib2.urlopen(request)
 # print response.read()
