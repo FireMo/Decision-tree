@@ -48,11 +48,10 @@ def upload_file():
     if not os.path.exists(file_dir):
         os.makedirs(file_dir)
     f = request.files['file']
-    # print f.filename
     if f and allowed_file(f.filename):
         fname = f.filename
         f.save(os.path.join(file_dir, fname))
-        return jsonify({"error": 0, "errmsg": "上传成功"})
+        return jsonify({"success": 0, "successmsg": "上传成功"})
     else:
         return jsonify({"error": 1001, "errmsg": "上传失败"})
 
@@ -93,7 +92,6 @@ def file_upload():
 
 # 传入参数
 @app.route('/action/create', methods=['GET'])
-# @app.route('/')
 def index():
     fig = creatpic()
     # Encode image to png in base64
@@ -114,37 +112,12 @@ def dealdata():
     attributeList.append(requestJsonString['wenli'])
     attributeList.append(requestJsonString['qibu'])
     attributeList.append(requestJsonString['chugan'])
-    # attributeList2 = json.dumps(attributeList, encoding='utf-8')
-    # for i in range(len(attributeList)):
-    #     print attributeList[i]
-    # print attributeList
-    # butlist = ['qinglv', 'quansuo', 'zhuoxiang', 'qingxi', 'aoxian', 'yinghua']
-    # lensesLablestwo = lensesLables[:]
+    for i in range(len(attributeList)):
+        butlist.append(attributeList[i].encode('utf-8'))
     lenses, lensesLables = gain_data()
     lensesTree = trees.createTree(lenses, lensesLables)
-    print lenses
-    print 'lic'
-    print lensesLables
-    # labelsres = trees.classify(lensesTree, lensesLables, attributeList)
-    labelsres = classify(lensesTree, lensesLables, attributeList)
+    labelsres = trees.classify(lensesTree, lensesLables, butlist)
     return labelsres
-
-
-def classify(inputTree, featLabels, testVec):
-    firstStr = inputTree.keys()[0]
-    print firstStr
-    secondDict = inputTree[firstStr]
-    print secondDict
-    featIndex = featLabels.index(firstStr)
-    print featIndex
-    key = testVec[featIndex]
-    print key
-    valueOfFeat = secondDict[key]
-    if isinstance(valueOfFeat, dict):
-        classLabel = classify(valueOfFeat, featLabels, testVec)
-    else:
-        classLabel = valueOfFeat
-    return classLabel
 
 
 if __name__ == '__main__':

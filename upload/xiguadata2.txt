@@ -1,4 +1,4 @@
-qinglv	quansuo	zhuoxiang	qingxi	aoxian	yinghua	yes
+﻿qinglv	quansuo	zhuoxiang	qingxi	aoxian	yinghua	yes
 wuhei	quansuo	chenmeng	qingxi	aoxian	yinghua	yes
 wuhei	quansuo	zhuoxiang	qingxi	aoxian	yinghua	yes
 qinglv	quansuo	chenmen	qingxi	aoxian	yinghua	yes

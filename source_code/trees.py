@@ -104,18 +104,18 @@ def createTree(dataSet, labels):
     return myTree                            
 
 
-# def classify(inputTree, featLabels, testVec):
-#     firstStr = inputTree.keys()[0]
-#     print firstStr
-#     secondDict = inputTree[firstStr]
-#     featIndex = featLabels.index(firstStr)
-#     key = testVec[featIndex]
-#     valueOfFeat = secondDict[key]
-#     if isinstance(valueOfFeat, dict):
-#         classLabel = classify(valueOfFeat, featLabels, testVec)
-#     else:
-#         classLabel = valueOfFeat
-#     return classLabel
+def classify(inputTree, featLabels, testVec):
+    firstStr = inputTree.keys()[0]
+    print firstStr
+    secondDict = inputTree[firstStr]
+    featIndex = featLabels.index(firstStr)
+    key = testVec[featIndex]
+    valueOfFeat = secondDict[key]
+    if isinstance(valueOfFeat, dict):
+        classLabel = classify(valueOfFeat, featLabels, testVec)
+    else:
+        classLabel = valueOfFeat
+    return classLabel
 
 
 def storeTree(inputTree, filename):
