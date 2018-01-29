@@ -42,7 +42,8 @@ def allowed_file(filename):
 
 
 # 处理前台传入的文件
-@app.route('/fileup/fileuploaded', methods=["POST"], strict_slashes=False)
+# @app.route('/fileup/fileuploaded', methods=["POST"], strict_slashes=False)
+@app.route('/fileup/fileuploaded', methods=["POST"])
 def upload_file():
     file_dir = os.path.join(basedir, app.config['UPLOAD_FOLDER'])
     if not os.path.exists(file_dir):
@@ -51,9 +52,11 @@ def upload_file():
     if f and allowed_file(f.filename):
         fname = f.filename
         f.save(os.path.join(file_dir, fname))
-        return jsonify({"success": 0, "successmsg": "上传成功"})
+        # return jsonify({"success": 0, "successmsg": "上传成功"})
+        return "上传成功！"
     else:
-        return jsonify({"error": 1001, "errmsg": "上传失败"})
+        # return jsonify({"error": 1001, "errmsg": "上传失败"})
+        return "上传失败！"
 
 
 @app.route('/uploads/<filename>')

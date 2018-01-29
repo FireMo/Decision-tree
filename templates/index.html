@@ -10,12 +10,18 @@
 </head>
 <body>
 <section>
-    <form enctype="multipart/form-data" action="/fileup/fileuploaded" method="post">
-        <p>File:<input type="file" name="file"></p>
-    {#    <p>File:<input type="file" name="filetwo"></p>#}
-        <p><strong>格式要求:</strong>按照属性顺序，依次放置属性值；属性值之间以tab间隔开；最后一列为样本的标签；</p>
-        <button type="submit" class="btn btn-default" onclick="uploads()">提交</button>
-    </form>
+    <div style="text-align: center">
+        <form enctype="multipart/form-data" action="/fileup/fileuploaded" method="post">
+    {#        File:<input type="file" name="file">#}
+            <input type="file" name="file">
+            <button type="submit" class="btn btn-default" onclick="uploads()">提交</button>
+        {#    <p>File:<input type="file" name="filetwo"></p>#}
+        </form>
+        <p style="width: auto"><strong>格式要求:</strong>按照属性顺序，依次放置属性值；属性值之间以tab间隔开；最后一列为样本的标签；</p>
+    </div>
+    <div id="uploadfileresult">
+        lican
+    </div>
 </section>
 <section>
    <div class="iframe" align="center">
@@ -105,72 +111,7 @@
 <script src="../static/js/jquery-latest.js"></script>
 
 
-<script language="JavaScript">
-
-    {#生成决策树#}
-function createTree() {
-    $('#picture').html('');
-    $.ajax({
-        url:'/action/create',
-        type:'GET',
-        async:false,
-        data:{},
-        success:function (data) {
-{#            console.log(data);#}
-            deal(data)
-        },
-        error:function (xhr,testStatus) {
-            console.log('error')
-        }
-    })
-}
-
-function deal(data) {
-    var imgNode = document.createElement('img');
-    imgNode.setAttribute('src','data:image/png;base64,'+ data);
-    document.getElementById('picture').appendChild(imgNode);
-}
-
-
-{#文件上传#}
-function uploads() {
-    $.ajax({
-        url:'/fileup/fileuploaded',
-        type:'post',
-        async:false,
-        data:{},
-        success:function (results) {
-            console.log(results)
-        },
-        error:function (xhr,testState) {
-            console.log('error')
-        }
-        })
-    }
-
-
-function transdata() {
-    $.ajax({
-        url:'/action/dealdata',
-        type:'POST',
-        async:false,
-        data:{},
-        success:function (results) {
-{#            show(results)#}
-            alert(results)
-        },
-        error:function (xhr,testState) {
-            console.log('error')
-        }
-
-    })
-}
-
-function show() {
-{#    var imgNode = document.createElement('input');#}
-{#    imgNode.setAttribute('src','data:image/png;base64,'+ data);#}
-{#    document.getElementById('labels').appendChild(imgNode);#}
-}
+<script src="../static/js/index.js">
 
 
 </script>
