@@ -10,6 +10,21 @@
 </head>
 <body>
 <section>
+    <div style="text-align: center" >
+        <form id="form1" enctype="multipart/form-data" style="text-align: center" action="/fileup/fileuploaded" method="post">
+    {#        File:<input type="file" name="file">#}
+            <input id="file_sc" type="file" name="file">
+{#            <button type="submit" class="btn btn-default" onclick="uploads()">提交</button>#}
+            <input type="submit" id="tj" value="提交">
+        {#    <p>File:<input type="file" name="filetwo"></p>#}
+        </form>
+        <p style="width: auto"><strong>格式要求:</strong>按照属性顺序，依次放置属性值；属性值之间以tab间隔开；最后一列为样本的标签；</p>
+    </div>
+    <div id="uploadfileresult">
+        lican
+    </div>
+</section>
+<section>
    <div class="iframe" align="center">
        <p>点击按钮生成决策树：</p>
 {#       <a class="btn" onclick="create()">生成决策树</a>#}
@@ -17,15 +32,16 @@
    </div>
    <div id="picture"> </div>
 </section>
-   <section>
+
+<section>
        <form class="form-horizontal" action="/action/dealdata" method="post">
            <div class="form-group">
                <label for="imputSeze" class="col-sm-2 control-label">色泽</label>
                <div class="col-sm-2">
                    <select class="form-control" name="seze">
-                       <option>qinglv</option>
-                       <option>wuhei</option>
-                       <option>qianbai</option>
+                       <option>青绿</option>
+                       <option>乌黑</option>
+                       <option>浅白</option>
                    </select>
                </div>
            </div>
@@ -33,9 +49,9 @@
                <label for="imputGendi" class="col-sm-2 control-label">根蒂</label>
                <div class="col-sm-2">
                    <select class="form-control" name="gendi">
-                       <option>quansuo</option>
-                       <option>shaoquan</option>
-                       <option>yingting</option>
+                       <option>蜷缩</option>
+                       <option>稍蜷</option>
+                       <option>硬挺</option>
                    </select>
                </div>
            </div>
@@ -43,9 +59,9 @@
                <label for="imputQiaosheng" class="col-sm-2 control-label">敲声</label>
                <div class="col-sm-2">
                    <select class="form-control" name="qiaosheng">
-                       <option>zhuoxiang</option>
-                       <option>chenmen</option>
-                       <option>qingcui</option>
+                       <option>浊响</option>
+                       <option>沉闷</option>
+                       <option>清脆</option>
                    </select>
                </div>
            </div>
@@ -53,9 +69,9 @@
                <label for="imputWenli" class="col-sm-2 control-label">纹理</label>
                <div class="col-sm-2">
                    <select class="form-control" name="wenli">
-                       <option>qingxi</option>
-                       <option>shaohu</option>
-                       <option>mohu</option>
+                       <option>清晰</option>
+                       <option>稍糊</option>
+                       <option>模糊</option>
                    </select>
                </div>
            </div>
@@ -63,9 +79,9 @@
                <label for="imputQibu" class="col-sm-2 control-label">脐部</label>
                <div class="col-sm-2">
                    <select class="form-control" name="qibu">
-                       <option>aoxian</option>
-                       <option>shaoao</option>
-                       <option>pingtan</option>
+                       <option>凹陷</option>
+                       <option>稍凹</option>
+                       <option>平坦</option>
                    </select>
                </div>
            </div>
@@ -73,8 +89,8 @@
                <label for="imputChugan" class="col-sm-2 control-label">触感</label>
                <div class="col-sm-2">
                    <select class="form-control" name="chugan">
-                       <option>yinghua</option>
-                       <option>ruannian</option>
+                       <option>硬滑</option>
+                       <option>软粘</option>
                    </select>
                </div>
            </div>
@@ -87,67 +103,13 @@
 
            <div id="labels"></div>
        </form>
-   </section>
-
-
-
+</section>
 
 <script src="../static/js/jquery.min.js"></script>
 <script type="text/javascript" src="../static/js/prettify/prettify.js"></script>
 <script src="https://cdn.bootcss.com/prettify/r298/run_prettify.js"></script>
 <script src="../static/js/layout.js"></script>
 <script src="../static/js/jquery-latest.js"></script>
-
-
-<script language="JavaScript">
-function createTree() {
-    $('#picture').html('');
-    $.ajax({
-        url:'/action/create',
-        type:'GET',
-        async:false,
-        data:{},
-        success:function (data) {
-{#            console.log(data);#}
-            deal(data)
-        },
-        error:function (xhr,testStatus) {
-            console.log('error')
-        }
-    })
-}
-
-
-function deal(data) {
-    var imgNode = document.createElement('img');
-    imgNode.setAttribute('src','data:image/png;base64,'+ data);
-    document.getElementById('picture').appendChild(imgNode);
-}
-
-function transdata() {
-    $.ajax({
-        url:'/action/dealdata',
-        type:'POST',
-        async:false,
-        data:{},
-        success:function (results) {
-{#            show(results)#}
-            alert(results)
-        },
-        error:function (xhr,testState) {
-            console.log('error')
-        }
-
-    })
-}
-
-function show() {
-{#    var imgNode = document.createElement('input');#}
-{#    imgNode.setAttribute('src','data:image/png;base64,'+ data);#}
-{#    document.getElementById('labels').appendChild(imgNode);#}
-}
-
-
-</script>
+<script src="../static/js/index.js"></script>
 </body>
 </html>

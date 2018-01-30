@@ -6,6 +6,10 @@ Decision Tree Source Code for Machine Learning in Action Ch. 3
 from math import log
 import operator
 
+# import sys
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
+
 
 # create the dataset
 def createDataSet():
@@ -81,7 +85,7 @@ def majorityCnt(classList):
     return sortedClassCount[0][0]
 
 
-def createTree(dataSet,labels):
+def createTree(dataSet, labels):
     classList = [example[-1] for example in dataSet]
     if classList.count(classList[0]) == len(classList): 
         return classList[0]  # stop splitting when all of the classes are equal
@@ -100,20 +104,21 @@ def createTree(dataSet,labels):
     return myTree                            
 
 
-def classify(inputTree,featLabels,testVec):
+def classify(inputTree, featLabels, testVec):
     firstStr = inputTree.keys()[0]
+    print firstStr
     secondDict = inputTree[firstStr]
     featIndex = featLabels.index(firstStr)
     key = testVec[featIndex]
     valueOfFeat = secondDict[key]
-    if isinstance(valueOfFeat, dict): 
+    if isinstance(valueOfFeat, dict):
         classLabel = classify(valueOfFeat, featLabels, testVec)
     else:
         classLabel = valueOfFeat
     return classLabel
 
 
-def storeTree(inputTree,filename):
+def storeTree(inputTree, filename):
     import pickle
     fw = open(filename, 'w')
     pickle.dump(inputTree, fw)
