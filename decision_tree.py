@@ -53,10 +53,12 @@ def upload_file():
         fname = f.filename
         f.save(os.path.join(file_dir, fname))
         # return jsonify({"success": 0, "successmsg": "上传成功"})
-        return "上传成功！"
+        results = "上传成功！"
+        return render_template('index.html', results=results)
     else:
         # return jsonify({"error": 1001, "errmsg": "上传失败"})
-        return "上传失败！"
+        results = "请检查文件！"
+        return render_template('index.html', results=results)
 
 
 @app.route('/uploads/<filename>')
@@ -120,7 +122,7 @@ def dealdata():
     lenses, lensesLables = gain_data()
     lensesTree = trees.createTree(lenses, lensesLables)
     labelsres = trees.classify(lensesTree, lensesLables, butlist)
-    return labelsres
+    return render_template('index.html', labelsres=labelsres)
 
 
 if __name__ == '__main__':
