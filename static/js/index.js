@@ -25,7 +25,7 @@ function deal(data) {
 
 // 文件上传
 function uploads() {
-    $('#uploadfileresult').html('');
+    $("#uploadfileresult").html('');
     $.ajax({
         url:'/fileup/fileuploaded',
         type:'post',
@@ -38,6 +38,14 @@ function uploads() {
             console.log('error')
         }
         })
+
+    $("#form1").bind("submit", function(){
+    var file=$("#file_sc").val();
+    if( file == " " ){
+        alert("请选择文件！！！");
+        return false;
+    }
+});
     }
 
 

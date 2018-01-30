@@ -10,11 +10,12 @@
 </head>
 <body>
 <section>
-    <div style="text-align: center">
-        <form enctype="multipart/form-data" action="/fileup/fileuploaded" method="post">
+    <div style="text-align: center" >
+        <form id="form1" enctype="multipart/form-data" style="text-align: center" action="/fileup/fileuploaded" method="post">
     {#        File:<input type="file" name="file">#}
-            <input type="file" name="file">
-            <button type="submit" class="btn btn-default" onclick="uploads()">提交</button>
+            <input id="file_sc" type="file" name="file">
+{#            <button type="submit" class="btn btn-default" onclick="uploads()">提交</button>#}
+            <input type="submit" id="tj" value="提交">
         {#    <p>File:<input type="file" name="filetwo"></p>#}
         </form>
         <p style="width: auto"><strong>格式要求:</strong>按照属性顺序，依次放置属性值；属性值之间以tab间隔开；最后一列为样本的标签；</p>
@@ -109,11 +110,6 @@
 <script src="https://cdn.bootcss.com/prettify/r298/run_prettify.js"></script>
 <script src="../static/js/layout.js"></script>
 <script src="../static/js/jquery-latest.js"></script>
-
-
-<script src="../static/js/index.js">
-
-
-</script>
+<script src="../static/js/index.js"></script>
 </body>
 </html>
