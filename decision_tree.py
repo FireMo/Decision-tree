@@ -12,6 +12,7 @@ from source_code import trees
 from werkzeug.utils import secure_filename
 import json
 import chardet
+from source_code import trees
 
 import sys
 reload(sys)
@@ -66,24 +67,24 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
-# 获取数据
-def gain_data():
-    # url_file = os.path.join(basedir, app.config['UPLOAD_FOLDER'])
-    # fr = open('D:\PyCharm\decision_tree\upload\\xiguadata2.txt')
-    fr = open('D:\PyCharm\decision_tree\upload\\xiguadata3utf8.txt')
-    lenses = [inst.strip().split('\t') for inst in fr.readlines()]
-    fp = open('D:\PyCharm\decision_tree\upload\\xigualabelutf8.txt')
-    lensesLableses = [inst.strip().split('\t') for inst in fp.readlines()]
-    lensesLables = lensesLableses[0]
-    # lensesLables = ['seze', 'gendi', 'qiaosheng', 'wenli', 'qibu', 'chugan']
-    return lenses, lensesLables
+# # 获取数据
+# def gain_data():
+#     # url_file = os.path.join(basedir, app.config['UPLOAD_FOLDER'])
+#     # fr = open('D:\PyCharm\decision_tree\upload\\xiguadata2.txt')
+#     fr = open('D:\PyCharm\decision_tree\upload\\xiguadata3utf8.txt')
+#     lenses = [inst.strip().split('\t') for inst in fr.readlines()]
+#     fp = open('D:\PyCharm\decision_tree\upload\\xigualabelutf8.txt')
+#     lensesLableses = [inst.strip().split('\t') for inst in fp.readlines()]
+#     lensesLables = lensesLableses[0]
+#     # lensesLables = ['seze', 'gendi', 'qiaosheng', 'wenli', 'qibu', 'chugan']
+#     return lenses, lensesLables
 
 
 # 生成决策树并画图
 def creatpic():
     # fig = plt.figure(1, facecolor='white')
     # lensesLables = ['age', 'prescript', 'astigmatic', 'tearRate']
-    lenses, lensesLables = gain_data()
+    lenses, lensesLables = trees.gain_data()
     lensesTree = trees.createTree(lenses, lensesLables)
     fig = treePlotter.createPlot(lensesTree)
     return fig
@@ -119,7 +120,7 @@ def dealdata():
     attributeList.append(requestJsonString['chugan'])
     for i in range(len(attributeList)):
         butlist.append(attributeList[i].encode('utf-8'))
-    lenses, lensesLables = gain_data()
+    lenses, lensesLables = trees.gain_data()
     lensesTree = trees.createTree(lenses, lensesLables)
     labelsres = trees.classify(lensesTree, lensesLables, butlist)
     return render_template('index.html', labelsres=labelsres)

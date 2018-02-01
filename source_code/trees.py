@@ -1,3 +1,4 @@
+# encoding=utf-8
 '''
 Created on Oct 12, 2010
 Decision Tree Source Code for Machine Learning in Action Ch. 3
@@ -21,6 +22,27 @@ def createDataSet():
     labels = ['no surfacing', 'flippers']
     # change to discrete values
     return dataSet, labels
+
+
+# 获取数据
+def gain_data():
+    fr = open('D:\PyCharm\decision_tree\upload\zhongxiguadata.txt')
+    lenses = [inst.strip().split('\t') for inst in fr.readlines()]
+    fp = open('D:\PyCharm\decision_tree\upload\labelxigua.txt')
+    lensesLableses = [inst.strip().split('\t') for inst in fp.readlines()]
+    lensesLables = lensesLableses[0]
+    # lensesLables = ['seze', 'gendi', 'qiaosheng', 'wenli', 'qibu', 'chugan']
+    return lenses, lensesLables
+
+
+# 将数据集的数组组装成标签
+def data_deal():
+    data_dict = {}
+    lenses, lenses_labels = gain_data()
+    for i in range(len(lenses_labels)):
+        lab_list = set([example[i] for example in lenses])
+        data_dict[lenses_labels[i]] = lab_list
+    return data_dict
 
 
 # calculate the Shannon Entropy
@@ -98,9 +120,14 @@ def createTree(dataSet, labels):
     del(subLabels[bestFeat])
     featValues = [example[bestFeat] for example in dataSet]
     uniqueVals = set(featValues)
-    for value in uniqueVals:
-        # subLabels = labels[:]       # copy all of labels, so trees don't mess up existing labels
-        myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value), subLabels)
+    num_feat = data_deal()[bestFeatLabel]
+    for value in num_feat:
+        if value not in uniqueVals:
+            myTree[bestFeatLabel][value] = majorityCnt(classList)
+            return myTree
+        else:
+            # subLabels = labels[:]       # copy all of labels, so trees don't mess up existing labels
+            myTree[bestFeatLabel][value] = createTree(splitDataSet(dataSet, bestFeat, value), subLabels)
     return myTree                            
 
 
