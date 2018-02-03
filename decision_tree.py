@@ -12,17 +12,13 @@ from source_code import trees
 from werkzeug.utils import secure_filename
 import json
 import chardet
-from source_code import trees
-
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 
 matplotlib.use('Agg')  # 不出现画图的框
-
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
-
 app = Flask(__name__)
 UPLOAD_FOLDER = 'upload'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -30,10 +26,11 @@ basedir = os.path.abspath(os.path.dirname(__file__))  # D:\PyCharm\decision_tree
 app.config['MAX_CONTENT_LENGTH'] = 16*1024*1024
 
 
+# 模板渲染
 @app.route('/')
 def hello_world():
-    # 模板渲染
-    return render_template('index.html')
+    attr_dicts = trees.data_deal()
+    return render_template('index.html', attribute=attr_dicts)
 
 
 # 判断文件是否合法
@@ -49,17 +46,18 @@ def upload_file():
     file_dir = os.path.join(basedir, app.config['UPLOAD_FOLDER'])
     if not os.path.exists(file_dir):
         os.makedirs(file_dir)
+    attr_dict = trees.data_deal()
     f = request.files['file']
     if f and allowed_file(f.filename):
         fname = f.filename
         f.save(os.path.join(file_dir, fname))
         # return jsonify({"success": 0, "successmsg": "上传成功"})
         results = "上传成功！"
-        return render_template('index.html', results=results)
+        return render_template('upfileresult.html', attribute=attr_dict, results=results)
     else:
         # return jsonify({"error": 1001, "errmsg": "上传失败"})
         results = "请检查文件！"
-        return render_template('index.html', results=results)
+        return render_template('upfileresult.html', attribute=attr_dict, results=results)
 
 
 @app.route('/uploads/<filename>')
@@ -67,33 +65,23 @@ def uploaded_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
-# # 获取数据
-# def gain_data():
-#     # url_file = os.path.join(basedir, app.config['UPLOAD_FOLDER'])
-#     # fr = open('D:\PyCharm\decision_tree\upload\\xiguadata2.txt')
-#     fr = open('D:\PyCharm\decision_tree\upload\\xiguadata3utf8.txt')
-#     lenses = [inst.strip().split('\t') for inst in fr.readlines()]
-#     fp = open('D:\PyCharm\decision_tree\upload\\xigualabelutf8.txt')
-#     lensesLableses = [inst.strip().split('\t') for inst in fp.readlines()]
-#     lensesLables = lensesLableses[0]
-#     # lensesLables = ['seze', 'gendi', 'qiaosheng', 'wenli', 'qibu', 'chugan']
-#     return lenses, lensesLables
-
-
 # 生成决策树并画图
 def creatpic():
-    # fig = plt.figure(1, facecolor='white')
-    # lensesLables = ['age', 'prescript', 'astigmatic', 'tearRate']
-    lenses, lensesLables = trees.gain_data()
-    lensesTree = trees.createTree(lenses, lensesLables)
-    fig = treePlotter.createPlot(lensesTree)
+    lenses, lenses_labels = trees.gain_data()
+    lenses_tree = trees.createTree(lenses, lenses_labels)
+    fig = treePlotter.createPlot(lenses_tree)
     return fig
 
 
-@app.route('/aa')
+# 模板渲染
+@app.route('/sss')
 def file_upload():
-    # 模板渲染
-    return render_template('fileupload.html')
+    # attr_labels = {}
+    # lenses, lenses_labels = trees.gain_data()
+    attr_dict = trees.data_deal()
+    # attr_labels['label'] = lenses_labels
+    # attr_labels['valuess'] = attr_dict['']
+    return render_template('fileupload.html', labels=attr_dict)
 
 
 # 传入参数
@@ -112,18 +100,21 @@ def dealdata():
     requestJsonString = request.form.to_dict()
     butlist = []
     attributeList = []
-    attributeList.append(requestJsonString['seze'])
-    attributeList.append(requestJsonString['gendi'])
-    attributeList.append(requestJsonString['qiaosheng'])
-    attributeList.append(requestJsonString['wenli'])
-    attributeList.append(requestJsonString['qibu'])
-    attributeList.append(requestJsonString['chugan'])
+    attr_dict = trees.data_deal()
+    lenses, lenses_labels = trees.gain_data()
+    for i in range(len(lenses_labels)):
+        for labelc in attr_dict.keys():
+            print '%s 555 %s' % (labelc, lenses_labels[i])
+            if labelc == lenses_labels[i]:
+                attributeList.append(requestJsonString[labelc])
+                break
+        print '-----------'
     for i in range(len(attributeList)):
         butlist.append(attributeList[i].encode('utf-8'))
     lenses, lensesLables = trees.gain_data()
     lensesTree = trees.createTree(lenses, lensesLables)
     labelsres = trees.classify(lensesTree, lensesLables, butlist)
-    return render_template('index.html', labelsres=labelsres)
+    return render_template('index.html', attribute=attr_dict, labelsres=labelsres)
 
 
 if __name__ == '__main__':

@@ -26,11 +26,15 @@ def createDataSet():
 
 # 获取数据
 def gain_data():
-    fr = open('D:\PyCharm\decision_tree\upload\zhongxiguadata.txt')
-    lenses = [inst.strip().split('\t') for inst in fr.readlines()]
-    fp = open('D:\PyCharm\decision_tree\upload\labelxigua.txt')
-    lensesLableses = [inst.strip().split('\t') for inst in fp.readlines()]
-    lensesLables = lensesLableses[0]
+    # fr = open('D:\PyCharm\decision_tree\upload\zhongxiguadata.csv')
+    # with open('../upload/zhongxiguadata.csv') as fr:
+    with open('D:\PyCharm\decision_tree\upload\zhongxiguadata.csv') as fr:
+        lenses = [inst.strip().split('\t') for inst in fr.readlines()]
+    # fp = open('D:\PyCharm\decision_tree\upload\labelxigua.txt')
+    # with open('/upload/labelxigua.txt') as fp:
+    with open('D:\PyCharm\decision_tree\upload\labelxigua.txt') as fp:
+        lensesLableses = [inst.strip().split('\t') for inst in fp.readlines()]
+        lensesLables = lensesLableses[0]
     # lensesLables = ['seze', 'gendi', 'qiaosheng', 'wenli', 'qibu', 'chugan']
     return lenses, lensesLables
 
@@ -133,10 +137,13 @@ def createTree(dataSet, labels):
 
 def classify(inputTree, featLabels, testVec):
     firstStr = inputTree.keys()[0]
-    print firstStr
+    # print firstStr
     secondDict = inputTree[firstStr]
     featIndex = featLabels.index(firstStr)
+    # print featIndex
+    # print '888'
     key = testVec[featIndex]
+    # print key
     valueOfFeat = secondDict[key]
     if isinstance(valueOfFeat, dict):
         classLabel = classify(valueOfFeat, featLabels, testVec)

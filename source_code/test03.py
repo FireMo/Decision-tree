@@ -17,16 +17,25 @@ import chardet
 # print lensesTree
 # print treePlotter.createPlot(lensesTree)
 
-fr = open('D:\PyCharm\decision_tree\upload\\xiguadata3utf8.txt')
-# print chardet.detect(fr.read())
-lenses = [inst.strip().split('\t') for inst in fr.readlines()]
-print lenses
-fp = open('D:\PyCharm\decision_tree\upload\\xigualabelutf8.txt')
-lensesLableses = [inst.strip().split('\t') for inst in fp.readlines()]
+# fr = open('D:\PyCharm\decision_tree\upload\yingxiguadata.txt')
+# with open('../upload/zhongxiguadata.csv') as fr:
+#     # print chardet.detect(fr.read())
+#     lenses = [inst.strip().split('\t') for inst in fr.readlines()]
+# print lenses[0][0]
+# fp = open('D:\PyCharm\decision_tree\upload\labelxigua.txt')
+# with open('../upload/labelxigua.txt') as fp:
+#     lensesLableses = [inst.strip().split('\t') for inst in fp.readlines()]
+#     lensesLables = lensesLableses[0]
+# print lensesLables[0]
 # print chardet.detect(lensesLableses[0][0])
-# print lensesLableses
+
 # request = urllib2.Request("http://www.baidu.com")
 # response = urllib2.urlopen(request)
 # print response.read()
-print os.path.relpath('D:\PyCharm\decision_tree\upload\\xigualabelutf8.txt')
+# print os.path.relpath('D:\PyCharm\decision_tree\upload\\xigualabelutf8.txt')
+# lenses, lensesLables = trees.gain_data()
+# print lenses[0][0]
 
+t = trees.data_deal()
+for value in t.values()[0]:
+    print value

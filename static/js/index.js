@@ -77,9 +77,4 @@ function transdata() {
     })
 }
 
-// function show() {
-// {#    var imgNode = document.createElement('input');#}
-// {#    imgNode.setAttribute('src','data:image/png;base64,'+ data);#}
-// {#    document.getElementById('labels').appendChild(imgNode);#}
-// }
 

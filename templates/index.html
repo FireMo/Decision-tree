@@ -20,9 +20,9 @@
         </form>
         <p style="width: auto"><strong>格式要求:</strong>按照属性顺序，依次放置属性值；属性值之间以tab间隔开；最后一列为样本的标签；</p>
     </div>
-    <div id="uploadfileresult" style="text-align: center">
-        上传结果：{{ results }}
-    </div>
+    {% block upfileresult %}
+
+    {% endblock %}
 </section>
 <section>
    <div class="iframe" align="center">
@@ -34,78 +34,86 @@
 </section>
 
 <section>
-       <form class="form-horizontal" action="/action/dealdata" method="post" style="text-align: center">
+       <form class="form-horizontal" action="/action/dealdata" method="post" >
+       <ul>
            <div class="form-group">
-               <div class="col-sm-3"></div>
-               <label for="imputSeze" class="col-sm-2 control-label">色泽</label>
-               <div class="col-sm-2">
-                   <select class="form-control" name="seze">
-                       <option>青绿</option>
-                       <option>乌黑</option>
-                       <option>浅白</option>
-                   </select>
-               </div>
-               <div class="col-sm-5"></div>
+               {% for label in attribute.keys() %}
+{#                   <div class="col-sm-3"></div>#}
+                   <li>
+{#                   <label for="imputSeze" class="col-sm-4 control-label">{{ label }}</label>#}
+                   <label for="imputSeze">{{ label }}</label>
+{#                   <div class="col-sm-8" style="text-align: center">#}
+                   <div>
+                       <select class="form-control" name="{{ label }}">
+                           {% for value in attribute[label] %}
+                               <option>{{ value }}</option>
+                           {% endfor %}
+                       </select>
+                   </div>
+                   </li>
+{#                   <div class="col-sm-5"></div>#}
+               {% endfor %}
            </div>
-           <div class="form-group">
-               <div class="col-sm-3"></div>
-               <label for="imputGendi" class="col-sm-2 control-label">根蒂</label>
-               <div class="col-sm-2">
-                   <select class="form-control" name="gendi">
-                       <option>蜷缩</option>
-                       <option>稍蜷</option>
-                       <option>硬挺</option>
-                   </select>
-               </div>
-               <div class="col-sm-5"></div>
-           </div>
-           <div class="form-group">
-               <div class="col-sm-3"></div>
-               <label for="imputQiaosheng" class="col-sm-2 control-label">敲声</label>
-               <div class="col-sm-2">
-                   <select class="form-control" name="qiaosheng">
-                       <option>浊响</option>
-                       <option>沉闷</option>
-                       <option>清脆</option>
-                   </select>
-               </div>
-               <div class="col-sm-5"></div>
-           </div>
-           <div class="form-group">
-               <div class="col-sm-3"></div>
-               <label for="imputWenli" class="col-sm-2 control-label">纹理</label>
-               <div class="col-sm-2">
-                   <select class="form-control" name="wenli">
-                       <option>清晰</option>
-                       <option>稍糊</option>
-                       <option>模糊</option>
-                   </select>
-               </div>
-               <div class="col-sm-5"></div>
-           </div>
-           <div class="form-group">
-               <div class="col-sm-3"></div>
-               <label for="imputQibu" class="col-sm-2 control-label">脐部</label>
-               <div class="col-sm-2">
-                   <select class="form-control" name="qibu">
-                       <option>凹陷</option>
-                       <option>稍凹</option>
-                       <option>平坦</option>
-                   </select>
-               </div>
-               <div class="col-sm-5"></div>
-           </div>
-           <div class="form-group">
-               <div class="col-sm-3"></div>
-               <label for="imputChugan" class="col-sm-2 control-label">触感</label>
-               <div class="col-sm-2">
-                   <select class="form-control" name="chugan">
-                       <option>硬滑</option>
-                       <option>软粘</option>
-                   </select>
-               </div>
-               <div class="col-sm-5"></div>
-           </div>
+       </ul>
+{#           <div class="form-group">#}
+{#               <div class="col-sm-3"></div>#}
+{#               <label for="imputGendi" class="col-sm-2 control-label">根蒂</label>#}
+{#               <div class="col-sm-2">#}
+{#                   <select class="form-control" name="gendi">#}
+{#                       <option>蜷缩</option>#}
+{#                       <option>稍蜷</option>#}
+{#                       <option>硬挺</option>#}
+{#                   </select>#}
+{#               </div>#}
+{#               <div class="col-sm-5"></div>#}
+{#           </div>#}
+{#           <div class="form-group">#}
+{#               <div class="col-sm-3"></div>#}
+{#               <label for="imputQiaosheng" class="col-sm-2 control-label">敲声</label>#}
+{#               <div class="col-sm-2">#}
+{#                   <select class="form-control" name="qiaosheng">#}
+{#                       <option>浊响</option>#}
+{#                       <option>沉闷</option>#}
+{#                       <option>清脆</option>#}
+{#                   </select>#}
+{#               </div>#}
+{#               <div class="col-sm-5"></div>#}
+{#           </div>#}
+{#           <div class="form-group">#}
+{#               <div class="col-sm-3"></div>#}
+{#               <label for="imputWenli" class="col-sm-2 control-label">纹理</label>#}
+{#               <div class="col-sm-2">#}
+{#                   <select class="form-control" name="wenli">#}
+{#                       <option>清晰</option>#}
+{#                       <option>稍糊</option>#}
+{#                       <option>模糊</option>#}
+{#                   </select>#}
+{#               </div>#}
+{#               <div class="col-sm-5"></div>#}
+{#           </div>#}
+{#           <div class="form-group">#}
+{#               <div class="col-sm-3"></div>#}
+{#               <label for="imputQibu" class="col-sm-2 control-label">脐部</label>#}
+{#               <div class="col-sm-2">#}
+{#                   <select class="form-control" name="qibu">#}
+{#                       <option>凹陷</option>#}
+{#                       <option>稍凹</option>#}
+{#                       <option>平坦</option>#}
+{#                   </select>#}
+{#               </div>#}
+{#               <div class="col-sm-5"></div>#}
+{#           </div>#}
+{#           <div class="form-group">#}
+{#               <div class="col-sm-3"></div>#}
+{#               <label for="imputChugan" class="col-sm-2 control-label">触感</label>#}
+{#               <div class="col-sm-2">#}
+{#                   <select class="form-control" name="chugan">#}
+{#                       <option>硬滑</option>#}
+{#                       <option>软粘</option>#}
+{#                   </select>#}
+{#               </div>#}
+{#               <div class="col-sm-5"></div>#}
+{#           </div>#}
 {#           <input type="text" name="seze" placeholder="青绿、乌黑、浅白"> <br />#}
            <div class="form-group">
                 <div class="col-sm-offset-1 col-sm-10">
