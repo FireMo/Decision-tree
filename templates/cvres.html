@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>交叉验证结果</title>
+    <link href="{{ url_for('static', filename='css/bootstrap.min.css')}}" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            float:left;
+            position:relative;
+            left:50%
+        }
+        .tab{
+            text-align: center;
+            width:140px;
+            height:auto;
+            float:left;
+            display:inline;
+            position:relative;
+            left:-80%;
+        }
+        .ratio{
+
+        }
+    </style>
+</head>
+<body>
+<div class="tab">
+    <table class="table table-hover">
+        <thead style="font-size: 16px">
+          <tr>
+           <th style="text-align: center">决策树检测结果</th>
+          </tr>
+        </thead>
+        <tbody>
+            {% for accu in accuracies %}
+
+                {% for i in range(4) %}
+                    <tr>
+                    <td>{{ accu[i] }}</td>
+                    </tr>
+                {% endfor %}
+
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+<div class="tab">
+    <table class="table table-hover">
+        <thead style="font-size: 16px">
+        <tr>
+            <th style="text-align: center">测试集实际结果</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for test in test_labs %}
+
+                {% for i in range(4) %}
+                    <tr>
+                    <td>{{ test[i] }}</td>
+                    </tr>
+                {% endfor %}
+
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+<div class="tab ratio">
+    <table class="table table-hover">
+        <thead style="font-size: 16px">
+        <tr>
+            <th style="text-align: center">正确率</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ratio in correct_ratio %}
+            <tr style="height: 148px;padding-top: 50%">
+                <td style="vertical-align: middle">{{ ratio }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
