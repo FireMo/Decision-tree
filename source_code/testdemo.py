@@ -8,14 +8,14 @@ import os
 
 
 # 获取结果
-def gain_results():
+def gain_results(foldnum):
     # 获取属性列表
     lenses_labels = rawdata.get_attr_value()
     dirs = os.listdir('D:/PyCharm/decision_tree/dataDir/sample_data1')
     decision_trees = []
     accuracies = []
-    tests = dirs[:5]  # 测试集
-    trains = dirs[-5:]  # 训练集
+    tests = dirs[:foldnum]  # 测试集
+    trains = dirs[-foldnum:]  # 训练集
     for i in range(len(trains)):
         lenses = rawdata.get_train_data(trains[i])
         decision_tree = trees.createTree(lenses, lenses_labels)

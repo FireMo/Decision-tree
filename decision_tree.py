@@ -26,6 +26,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 basedir = os.path.abspath(os.path.dirname(__file__))  # D:\PyCharm\decision_tree
 app.config['MAX_CONTENT_LENGTH'] = 16*1024*1024
 
+# g_fattr = " "
+# g_fvalue = " "
+
 
 # 模板渲染
 @app.route('/')
@@ -48,10 +51,15 @@ def upload_file():
     if not os.path.exists(file_dir):
         os.makedirs(file_dir)
     attr_dict = rawdata.data_deal()
-    f = request.files['file']
-    if f and allowed_file(f.filename):
-        fname = f.filename
-        f.save(os.path.join(file_dir, fname))
+    fattr = request.files['fileattr']
+    # g_fattr = fattr
+    fvalue = request.files['filevalue']
+    # g_fvalue = fvalue
+    if fattr and fvalue and allowed_file(fattr.filename) and allowed_file(fvalue.filename):
+        fattrname = fattr.filename
+        fvaluename = fvalue.filename
+        fattr.save(os.path.join(file_dir, fattrname))
+        fvalue.save(os.path.join(file_dir, fvaluename))
         # return jsonify({"success": 0, "successmsg": "上传成功"})
         results = "上传成功！"
         return render_template('upfileresult.html', attribute=attr_dict, results=results)
@@ -59,6 +67,12 @@ def upload_file():
         # return jsonify({"error": 1001, "errmsg": "上传失败"})
         results = "请检查文件！"
         return render_template('upfileresult.html', attribute=attr_dict, results=results)
+
+
+# g_fattr = request.files['fileattr']
+# print g_fattr
+# print '*********'
+# print g_fvalue
 
 
 @app.route('/uploads/<filename>')
@@ -78,7 +92,11 @@ def creatpic():
 # 获取交叉验证结果
 @app.route('/cv/result', methods=["POST"])
 def cross_vali():
-    test_labs, accuracies, correct_ratio = testdemo.gain_results()
+    foldnum = request.form.get("foldnum", type=int, default=5)
+    # print type(foldnum)
+    from source_code import crossv
+    crossv.split_datas(foldnum)
+    test_labs, accuracies, correct_ratio = testdemo.gain_results(foldnum)
     # print '真实标签值为：%s; 决策树检测的标签为：%s' % (test_labs[0][0], accuracies[0][0])
     # return test_labs, accuracies, correct_ratio
     return render_template('cvres.html', test_labs=test_labs, accuracies=accuracies, correct_ratio=correct_ratio)
@@ -112,19 +130,15 @@ def dealdata():
     butlist = []
     attributeList = []
     attr_dict = rawdata.data_deal()
-    # lenses, lenses_labels = trees.gain_data()
     lenses_more = rawdata.get_more_train_data()
     lenses_labels = rawdata.get_attr_value()
     for i in range(len(lenses_labels)):
         for labelc in attr_dict.keys():
-            # print '%s 555 %s' % (labelc, lenses_labels[i])
             if labelc == lenses_labels[i]:
                 attributeList.append(requestJsonString[labelc])
                 break
-        # print '-----------'
     for i in range(len(attributeList)):
         butlist.append(attributeList[i].encode('utf-8'))
-    # lenses, lensesLables = trees.gain_data()
     lensesTree = trees.createTree(lenses_more, lenses_labels)
     labelsres = trees.classify(lensesTree, lenses_labels, butlist)
     return render_template('index.html', attribute=attr_dict, labelsres=labelsres)

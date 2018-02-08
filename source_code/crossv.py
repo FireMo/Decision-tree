@@ -25,6 +25,9 @@ def loadDataSet(fileName):
 
 # 下面的splitDataSet用来切分数据集，如果是十折交叉，则split_size取10，filename为整个数据集文件，outdir则是切分的数据集的存放路径。
 def splitDataSet(fileName, split_size, outdir):
+    p = os.path.abspath(outdir)
+    import shutil
+    shutil.rmtree(p)
     if not os.path.exists(outdir):  # if not outdir , makrdir
         os.makedirs(outdir)
     fr = open(fileName, 'r')  # open fileName to read
@@ -101,7 +104,9 @@ def underSample(datafile):  # 只针对一个数据集的下采样
 
 # 下面的generateDataset(datadir,outdir)方法是从切分的数据集中留出一份作为测试集（无需抽样），对其余的进行抽样然后合并为一个作为训练集
 def generateDataset(datadir, outdir):  # 从切分的数据集中，对其中九份抽样汇成一个,剩余一个做为测试集,将最后的结果按照训练集和测试集输出到outdir中
-
+    p = os.path.abspath(outdir)
+    import shutil
+    shutil.rmtree(p)
     if not os.path.exists(outdir):  # if not outdir , makrdir
         os.makedirs(outdir)
     listfile = os.listdir(datadir)  # os.listdir() 方法用于返回指定的文件夹包含的文件或文件夹的名字的列表。
@@ -283,6 +288,16 @@ def crossValidation(clf, clfname, curdir, train_all, test_all):
     return ACC_mean, SN_mean, SP_mean
 
 
+# 外部调用入口
+def split_datas(dicot):
+    os.chdir("D:/PyCharm/decision_tree/dataDir")  # 你的数据存放目录
+    datadir = "split10_1"  # 切分后的文件输出目录
+    splitDataSet('zhongxiguadata.txt', dicot, datadir)  # 将数据集datasets切为dicot个保存到datadir目录中
+    # ===========================================================================================
+    outdir = "sample_data1"  # 抽样的数据集存放目录
+    train_all, test_all = generateDataset(datadir, outdir)  # 抽样后返回训练集和测试集
+    print "generateDataset end and cross validation start"
+
 # 测试
 if __name__ == '__main__':
     os.chdir("dataDir")  # 你的数据存放目录
@@ -295,11 +310,11 @@ if __name__ == '__main__':
     print "generateDataset end and cross validation start"
     # ============================================================================================
     # 分类器部分
-    from sklearn.ensemble import RandomForestClassifier
-
-    clf = RandomForestClassifier(n_estimators=500)  # 使用随机森林分类器来训练（参数：森林里树的个数）
-    clfname = "RF_1"  # ==========================================================================
-    curdir = "experimentdir"  # 工作目录
-    # clf:分类器,clfname:分类器名称,curdir:当前路径,train_all:训练集,test_all:测试集
-    ACC_mean, SN_mean, SP_mean = crossValidation(clf, clfname, curdir, train_all, test_all)
-    print ACC_mean, SN_mean, SP_mean  # 将ACC均值，SP均值，SN均值都输出到控制台
+    # from sklearn.ensemble import RandomForestClassifier
+    #
+    # clf = RandomForestClassifier(n_estimators=500)  # 使用随机森林分类器来训练（参数：森林里树的个数）
+    # clfname = "RF_1"  # ==========================================================================
+    # curdir = "experimentdir"  # 工作目录
+    # # clf:分类器,clfname:分类器名称,curdir:当前路径,train_all:训练集,test_all:测试集
+    # ACC_mean, SN_mean, SP_mean = crossValidation(clf, clfname, curdir, train_all, test_all)
+    # print ACC_mean, SN_mean, SP_mean  # 将ACC均值，SP均值，SN均值都输出到控制台
