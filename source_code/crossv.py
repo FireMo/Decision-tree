@@ -296,7 +296,7 @@ def split_datas(dicot):
     # ===========================================================================================
     outdir = "sample_data1"  # 抽样的数据集存放目录
     train_all, test_all = generateDataset(datadir, outdir)  # 抽样后返回训练集和测试集
-    print "generateDataset end and cross validation start"
+    # print "generateDataset end and cross validation start"
 
 # 测试
 if __name__ == '__main__':

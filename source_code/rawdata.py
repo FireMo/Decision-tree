@@ -4,15 +4,32 @@
 # 获取所有的属性值
 def get_more_train_data():
     # with open('D:\PyCharm\decision_tree\upload\lenses.txt') as fm:
-    with open('D:\PyCharm\decision_tree\upload\zhongxiguadata.txt') as fm:
+    # with open("D:/PyCharm/decision_tree/upload/datasname.txt") as ds:
+    #     datas = [inst.strip().split('\t') for inst in ds.readlines()]
+    # print 'datas 是长度为%d' % len(datas)
+    # print datas
+    # if len(datas) == 2:
+    #     print "datas[0][0]是%s" % datas[0][0]
+    #     print "datas[1][0]是%s" % datas[1][0]
+    # if len(datas) == 2:
+    #     with open('D:/PyCharm/decision_tree/upload/' + datas[1][0]) as fm:
+    #         lenses_more = [inst.strip().split('\t') for inst in fm.readlines()]
+    # else:
+    with open('D:/PyCharm/decision_tree/upload/zhongxiguadata.txt') as fm:
         lenses_more = [inst.strip().split('\t') for inst in fm.readlines()]
     return lenses_more
 
 
 # 获取属性列表
 def get_attr_value():
-    # fp = open('xigualabel2.txt')
-    with open('D:\PyCharm\decision_tree\upload\labelxigua.txt') as fp:
+
+    # with open("D:/PyCharm/decision_tree/upload/datasname.txt") as ds:
+    #     datas = [inst.strip().split('\t') for inst in ds.readlines()]
+    # if len(datas) == 2:
+    #     with open('D:/PyCharm/decision_tree/upload/' + datas[0][0]) as fp:
+    #         lenses_labelses = [inst.strip().split('\t') for inst in fp.readlines()]
+    # else:
+    with open('D:/PyCharm/decision_tree/upload/labelxigua.txt') as fp:
         lenses_labelses = [inst.strip().split('\t') for inst in fp.readlines()]
     lenses_labels = lenses_labelses[0]
     # lensesLables = ['色泽', '根蒂', '敲声', '纹理', '脐部', '触感']

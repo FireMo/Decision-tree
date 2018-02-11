@@ -1,9 +1,35 @@
-{% extends 'index.html' %}
-
-{% block head %}
-{{ super() }}
-{% endblock %}
-
-{% block testnewsap %}
-
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试新样本</title>
+</head>
+<body>
+<form class="form-horizontal" action="/action/dealdata" method="post" >
+       <div class="form-group" style="text-align: center">
+           <div class="col-sm-offset-1 col-sm-10">
+               <button type="submit" class="btn btn-default">测试新样本···</button>
+           </div>
+       </div>
+       <ul>
+           <div class="form-group" style="text-align: center;margin-left: -165px">
+               {% for label in attribute.keys() %}
+                   <li>
+                   <label for="imput" class="control-label">{{ label }}</label>
+                   <div class="" style="padding-left: 800px">
+                       <select class="form-control" name="{{ label }}" style="width: 20%;margin-top: -35px">
+                           {% for value in attribute[label] %}
+                               <option>{{ value }}</option>
+                           {% endfor %}
+                       </select>
+                   </div>
+                   </li>
+               {% endfor %}
+           </div>
+       </ul>
+       <div id="labels" style="text-align: center">
+           检测结果：{{ labelsres }}
+       </div>
+</form>
+</body>
+</html>

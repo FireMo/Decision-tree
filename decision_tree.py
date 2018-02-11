@@ -7,9 +7,8 @@ import os
 import matplotlib
 from source_code import treePlotter, trees
 from flask import Flask, url_for, request, make_response, json, redirect, abort, session,\
-    render_template_string, render_template, send_from_directory, jsonify
-from source_code import trees
-from source_code import testdemo, rawdata
+    render_template_string, render_template, send_from_directory, g, jsonify
+from source_code import trees, crossv, testdemo, rawdata
 from werkzeug.utils import secure_filename
 import json
 import chardet
@@ -26,13 +25,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 basedir = os.path.abspath(os.path.dirname(__file__))  # D:\PyCharm\decision_tree
 app.config['MAX_CONTENT_LENGTH'] = 16*1024*1024
 
-# g_fattr = " "
-# g_fvalue = " "
-
 
 # 模板渲染
 @app.route('/')
 def hello_world():
+
     attr_dicts = rawdata.data_deal()
     return render_template('index.html', attribute=attr_dicts)
 
@@ -52,9 +49,13 @@ def upload_file():
         os.makedirs(file_dir)
     attr_dict = rawdata.data_deal()
     fattr = request.files['fileattr']
-    # g_fattr = fattr
     fvalue = request.files['filevalue']
-    # g_fvalue = fvalue
+    save_name = open('D:\PyCharm\decision_tree\upload\datasname.txt', 'w')
+    save_name.truncate()
+    save_name.write(fattr.filename)
+    save_name.write('\n')
+    save_name.write(fvalue.filename)
+    save_name.close()
     if fattr and fvalue and allowed_file(fattr.filename) and allowed_file(fvalue.filename):
         fattrname = fattr.filename
         fvaluename = fvalue.filename
@@ -67,12 +68,6 @@ def upload_file():
         # return jsonify({"error": 1001, "errmsg": "上传失败"})
         results = "请检查文件！"
         return render_template('upfileresult.html', attribute=attr_dict, results=results)
-
-
-# g_fattr = request.files['fileattr']
-# print g_fattr
-# print '*********'
-# print g_fvalue
 
 
 @app.route('/uploads/<filename>')
@@ -94,12 +89,16 @@ def creatpic():
 def cross_vali():
     foldnum = request.form.get("foldnum", type=int, default=5)
     # print type(foldnum)
-    from source_code import crossv
     crossv.split_datas(foldnum)
+    with open("D:/PyCharm/decision_tree/dataDir/sample_data1/test_1.datasets") as fd:
+        testdata = [inst.strip().split('\t') for inst in fd.readlines()]
+    g.numtestdata = len(testdata)
+    # print '****'
+    # print g.numtestdata
     test_labs, accuracies, correct_ratio = testdemo.gain_results(foldnum)
     # print '真实标签值为：%s; 决策树检测的标签为：%s' % (test_labs[0][0], accuracies[0][0])
-    # return test_labs, accuracies, correct_ratio
-    return render_template('cvres.html', test_labs=test_labs, accuracies=accuracies, correct_ratio=correct_ratio)
+    return render_template('cvres.html', test_labs=test_labs, accuracies=accuracies,
+                           correct_ratio=correct_ratio, numtestdata=g.numtestdata)
 
 
 # 模板渲染
@@ -122,6 +121,12 @@ def index():
     fig.savefig(sio, format='png')
     data = base64.b64encode(sio.getvalue()).decode()
     return data
+
+
+# @app.route('/action/sourcedata', methods=['POST'])
+# def sourcedata():
+#     # return redirect(url_for('dealdata'))
+#     return render_template('testnewsap.html')
 
 
 @app.route('/action/dealdata', methods=['POST'])
